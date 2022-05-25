@@ -5,6 +5,7 @@ import {
   useFonts,
   JustAnotherHand_400Regular,
 } from "@expo-google-fonts/just-another-hand";
+import { colors } from "../Variables/Theme";
 
 export default function Header() {
   let [fontsLoaded] = useFonts({
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "#AEC3B0",
+    backgroundColor: colors.accent2,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -45,9 +46,9 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingLeft: 20,
     paddingRight: 10,
-    color: "#124559",
+    color: colors.text,
     fontFamily: "JustAnotherHand_400Regular",
-    textShadowColor: "#EFF6E0",
+    textShadowColor: colors.background,
     textShadowOffset: { width: 3, height: 2 },
     textShadowRadius: 2,
   },
@@ -55,6 +56,6 @@ const styles = StyleSheet.create({
     fontSize: 40,
     paddingTop: 30,
     paddingRight: 20,
-    color: "#124559",
+    color: colors.text,
   },
 });

@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text, Button } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { colors } from "../Variables/Theme";
 
 export default function ContactBox(props: any) {
   return (
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#96B0AE",
+    backgroundColor: colors.accent2,
     maxHeight: 110,
     marginTop: 15,
     marginLeft: 15,
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 25,
     fontWeight: "bold",
-    color: "#124559",
+    color: colors.text,
   },
   lastOk: {
     fontSize: 15,
@@ -47,11 +48,11 @@ const styles = StyleSheet.create({
   button: {
     marginRight: 15,
     padding: 10,
-    backgroundColor: "#AEC3B0",
+    backgroundColor: colors.accent1,
     borderRadius: 15,
   },
   icon: {
     fontSize: 40,
-    color: "#124559",
+    color: colors.text2,
   },
 });
