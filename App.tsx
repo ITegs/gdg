@@ -1,12 +1,14 @@
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import uuid from "react-native-uuid";
+
 import AlertBox from "./components/AlertBox";
 import ContactList from "./components/ContactList";
 import Header from "./components/Header";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import uuid from "react-native-uuid";
+import { colors } from "./Variables/Theme";
 
 export default function App() {
   const [userId, setUserId] = useState("");
@@ -29,7 +31,9 @@ export default function App() {
     });
   };
 
-  checkUserId();
+  useEffect(() => {
+    checkUserId();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -45,6 +49,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#EFF6E0",
+    backgroundColor: colors.background,
+    minHeight: 1000,
   },
 });
