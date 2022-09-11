@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TextInput, Share } from "react-native";
+import { StyleSheet, View, Text, TextInput, Share, Button } from "react-native";
 import { useEffect, useState } from "react";
 import { Octicons } from "@expo/vector-icons";
 
@@ -6,19 +6,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { colors } from "../Variables/Theme";
 
 export default function Profile() {
-  const [userId, setUserId] = useState("");
+  const [PublicUserID, setPublicUserID] = useState("");
   const [addId, setAddId] = useState("");
 
-  function getId() {
-    AsyncStorage.getItem("@userId").then((value) => {
+  function getPublicUserID() {
+    AsyncStorage.getItem("@PublicUserID").then((value) => {
       if (value != null) {
-        setUserId(value);
+        setPublicUserID(value);
       }
     });
   }
 
   useEffect(() => {
-    getId();
+    getPublicUserID();
   }, []);
 
   return (
@@ -32,12 +32,12 @@ export default function Profile() {
             style={styles.copyIcon}
             onTouchStart={() =>
               Share.share({
-                // message: "Hier ist meine 'gdg?'-ID: \n" + userId,
-                message: userId,
+                // message: "Hier ist meine 'gdg?'-ID: \n" + PublicUserID,
+                message: PublicUserID,
               })
             }
           />
-          <Text style={styles.id}>{userId}</Text>
+          <Text style={styles.id}>{PublicUserID}</Text>
         </View>
       </View>
 
@@ -55,6 +55,10 @@ export default function Profile() {
         />
         <Octicons name="person-add" style={styles.addIcon} />
       </View>
+      <Button
+        onPress={() => (AsyncStorage.clear(), console.log("Storage cleared"))}
+        title="Clear Storage"
+      />
     </View>
   );
 }

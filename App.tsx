@@ -7,37 +7,92 @@ import uuid from "react-native-uuid";
 import AlertBox from "./components/AlertBox";
 import ContactList from "./components/ContactList";
 import Header from "./components/Header";
+import Profile from "./components/Profile";
 
 import { colors } from "./Variables/Theme";
 
+export let globalShowProfile = true;
+
 export default function App() {
-  const [userId, setUserId] = useState("");
-  const checkUserId = async () => {
-    // check if a user id is stored in the local storage
-    // if not, create a new one using uuid v4
-    // and store it in the local storage
+  const [PublicUserID, setPublicUserID] = useState("");
+  const [PrivateUserID, setPrivateUserID] = useState("");
+
+  const checkID = async () => {
+    // check if user id are stored in the local storage
     console.log("Checking for user id");
-    AsyncStorage.getItem("@userId").then((value) => {
-      if (value != null) {
-        console.log("Found userId: " + value);
-        setUserId(value);
+    AsyncStorage.getItem("@PublicUserID").then((publicID) => {
+      if (publicID != null) {
+        AsyncStorage.getItem("@PrivateUserID").then((privateID) => {
+          if (privateID != null) {
+            console.log("found UserIDs");
+            setPublicUserID(publicID);
+            setPrivateUserID(privateID);
+          } else {
+            console.log("No PrivateUserID found");
+            generatePrivateID().then(() => {
+              checkID();
+            });
+          }
+        });
       } else {
-        console.log("No userId found");
-        const newUserId = uuid.v4().toString();
-        AsyncStorage.setItem("@userId", newUserId);
-        console.log("Created new userId: " + newUserId);
-        setUserId(newUserId);
+        console.log("No PublicUserID found");
+        generatePublicID().then(() => {
+          checkID();
+        });
       }
     });
   };
 
+  const generateUUID = () => {
+    return uuid.v4().toString();
+  };
+
+  const generatePublicID = async () => {
+    console.log("generating PublicID");
+    AsyncStorage.setItem("@PublicUserID", generateUUID());
+  };
+  const generatePrivateID = async () => {
+    console.log("generating PrivateID");
+    const privateID = generateUUID();
+    AsyncStorage.setItem("@PrivateUserID", privateID).then(() => {
+      AsyncStorage.getItem("@PublicUserID").then((publicID) => {
+        const url =
+          "https://api.jo-dev.de/gdg/addUser.php?publicID=" +
+          publicID +
+          "&privateID=" +
+          privateID;
+        fetch(url)
+          .then((response) => response.text())
+          .then((result) => console.log("SERVER: " + result))
+          .catch((error) => console.log("error", error));
+      });
+    });
+  };
+
+  const [showProfile, setShowProfile] = useState(false);
+
+  function checkShowProfile() {
+    if (globalShowProfile) {
+      setShowProfile(true);
+    } else {
+      setShowProfile(false);
+    }
+
+    setTimeout(() => {
+      checkShowProfile();
+    }, 100);
+  }
+
   useEffect(() => {
-    checkUserId();
+    checkID();
+
+    checkShowProfile();
   }, []);
 
   return (
     <View style={styles.container}>
       <Header />
+      {showProfile && <Profile />}
       <ScrollView>
         <AlertBox />
         <ContactList />
