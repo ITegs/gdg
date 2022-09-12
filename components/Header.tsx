@@ -1,5 +1,4 @@
 import { StyleSheet, View, Text } from "react-native";
-import { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
 
@@ -9,11 +8,7 @@ import {
 } from "@expo-google-fonts/just-another-hand";
 import { colors } from "../Variables/Theme";
 
-import { globalShowProfile } from "../App";
-
-export default function Header() {
-  const [showProfile, setShowProfile] = useState(false);
-
+export default function Header({ setShowProfile }: any) {
   let [fontsLoaded] = useFonts({
     JustAnotherHand_400Regular,
   });
@@ -22,13 +17,20 @@ export default function Header() {
     return <AppLoading />;
   }
 
+  var profileSwitch = false;
+
+  const changeShowProfile = () => {
+    setShowProfile(!profileSwitch);
+    profileSwitch = !profileSwitch;
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>geht's dir gut?</Text>
       <MaterialIcons
         name="supervised-user-circle"
         style={styles.icon}
-        onPress={() => setShowProfile(!showProfile)}
+        onPress={changeShowProfile}
       />
     </View>
   );

@@ -4,14 +4,12 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from "react-native-uuid";
 
-import AlertBox from "./components/AlertBox";
+import AlertBox from "./components/StateBox";
 import ContactList from "./components/ContactList";
 import Header from "./components/Header";
 import Profile from "./components/Profile";
 
 import { colors } from "./Variables/Theme";
-
-export let globalShowProfile = true;
 
 export default function App() {
   const [PublicUserID, setPublicUserID] = useState("");
@@ -69,29 +67,15 @@ export default function App() {
     });
   };
 
-  const [showProfile, setShowProfile] = useState(false);
-
-  function checkShowProfile() {
-    if (globalShowProfile) {
-      setShowProfile(true);
-    } else {
-      setShowProfile(false);
-    }
-
-    setTimeout(() => {
-      checkShowProfile();
-    }, 100);
-  }
-
   useEffect(() => {
     checkID();
-
-    checkShowProfile();
   }, []);
+
+  const [showProfile, setShowProfile] = useState(false);
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header setShowProfile={setShowProfile} />
       {showProfile && <Profile />}
       <ScrollView>
         <AlertBox />
