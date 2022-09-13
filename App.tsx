@@ -1,6 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from "react-native-uuid";
 
@@ -72,14 +78,24 @@ export default function App() {
   }, []);
 
   const [showProfile, setShowProfile] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   return (
     <View style={styles.container}>
       <Header setShowProfile={setShowProfile} />
       {showProfile && <Profile />}
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+            }}
+          />
+        }
+      >
         <AlertBox />
-        <ContactList />
+        <ContactList refresh={refreshing} setRefreshing={setRefreshing} />
       </ScrollView>
     </View>
   );

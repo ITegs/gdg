@@ -1,13 +1,21 @@
-import { StyleSheet, View, Text, Button } from "react-native";
+import { StyleSheet, View, Text, Button, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "../Variables/Theme";
 
 export default function ContactBox(props: any) {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={props.ok ? styles.container : styles.redContainer}
+      activeOpacity={0.8}
+      onLongPress={() => {}}
+    >
       <View style={styles.info}>
         <Text style={styles.name}>{props.name}</Text>
-        <Text style={styles.lastOk}>Letztes "OK!": {props.lastOK}</Text>
+        {props.ok ? (
+          <Text style={styles.lastOk}>{props.lastOK}</Text>
+        ) : (
+          <Text>ist nicht OK!</Text>
+        )}
       </View>
       <View style={styles.button}>
         <MaterialCommunityIcons
@@ -15,7 +23,7 @@ export default function ContactBox(props: any) {
           style={styles.icon}
         />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -26,6 +34,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: colors.accent2,
+    maxHeight: 110,
+    marginTop: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    padding: 10,
+    borderRadius: 15,
+  },
+  redContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#D72638",
     maxHeight: 110,
     marginTop: 15,
     marginLeft: 15,
